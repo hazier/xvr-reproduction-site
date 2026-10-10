@@ -1,0 +1,46 @@
+{
+  "models": [
+    {
+      "model": "base_qwen3vl_2b",
+      "total": 1866,
+      "correct": 400,
+      "accuracy_percent": 21.436227224008576,
+      "source": "h800_full_sft_artifacts_20260707/eval_results_5090_official_compare_20260707_v2/base_qwen3vl_2b/20260706_171626/results.jsonl"
+    },
+    {
+      "model": "author_qwen3vl_2b_xvr",
+      "total": 1866,
+      "correct": 1276,
+      "accuracy_percent": 68.38156484458734,
+      "source": "h800_full_sft_artifacts_20260707/eval_results_5090_official_compare_20260707_v2/author_qwen3vl_2b_xvr/20260706_173239/results.jsonl"
+    },
+    {
+      "model": "h800_fullsft",
+      "total": 1866,
+      "correct": 1348,
+      "accuracy_percent": 72.2400857449089,
+      "source": "h800_full_sft_artifacts_20260707/eval_results_5090_official_compare_20260707_v2/h800_fullsft/20260706_173920/results.jsonl"
+    }
+  ],
+  "checks": [
+    "source_member_sha256",
+    "1866_unique_ids_each",
+    "same_order_prompts_gold_tasks",
+    "official_exact_and_partial_rescore",
+    "per_task_summary",
+    "matching_generation_settings"
+  ],
+  "protocol": {
+    "model_family": "qwen",
+    "engine": "hf",
+    "scoring": "dual",
+    "batch_size": 4,
+    "max_new_tokens": 64,
+    "newline_between_blocks": false,
+    "add_answer_format": false,
+    "adapter_path": null,
+    "dry_run": false
+  },
+  "input_reference_sha256": "f7bea11a160e648abb1166be13abe62e732992bdf1b4eb2214184b22be6ee6c1",
+  "note": "Offline result audit only. No inference, new model evaluation, weight verification, or statistical superiority claim."
+}
