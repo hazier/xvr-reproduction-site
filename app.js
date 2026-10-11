@@ -30,6 +30,7 @@ async function pick(index,updateURL=true){
   try{
     const c=await json(`data/cases/${index}.json`);if(ticket!==request)return;
     $('detail').innerHTML=`<div class="case-header"><h2>#${index+1} · ${esc(c.task)}</h2><a href="data/cases/${index}.json" download>原始记录 ↓</a></div><p class="case-id">${esc(c.id)}</p><div class="image-grid">${imageMarkup(c.images)}</div><table class="comparison"><thead><tr><th>模型</th><th>预测</th><th>标准答案</th><th>判定</th></tr></thead><tbody>${c.predictions.map((p,i)=>`<tr><td>${labels[i]}</td><td class="answer">${esc(p.answer)}</td><td>${esc(c.gold)}</td><td class="${p.correct?'good':'bad'}">${p.correct?'正确':'错误'}</td></tr>`).join('')}</tbody></table><h3>题目 / 原始提示词</h3><pre>${esc(c.question)}</pre><details><summary>三模型原始输出</summary>${c.predictions.map((p,i)=>`<h3>${labels[i]}</h3><pre>${esc(p.raw)}</pre>`).join('')}</details><details id="trace-detail"><summary>H800 Token Trace · 独立诊断运行</summary>${traceHTML(c.trace)}</details>`;
+    $('detail').insertAdjacentHTML('beforeend','<p class="source-note">题目 / 图片：<a class="cite" href="#ref-2">XVR 数据集 [2]</a> · 模型：<a class="cite" href="#ref-3">Base [3]</a> / <a class="cite" href="#ref-4">Author [4]</a> · 本次输出与独立 Trace：<a class="cite" href="#ref-6">实验记录 [6]</a></p>');
     $('detail').querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>{img.alt+=' · 图片加载失败';img.parentElement.title='图片加载失败，可刷新重试';}));
   }catch(error){if(ticket===request)$('detail').innerHTML='<p class="empty error">题目读取失败，请刷新重试。</p>';}
 }

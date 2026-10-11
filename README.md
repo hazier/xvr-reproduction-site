@@ -20,6 +20,12 @@ JSON fetches require an HTTP server; opening index.html through file:// is not s
 
 ## Provenance
 
+The page includes inline numbered citations and a References section covering the
+XVR paper (Jeong et al., CVPR 2026; https://arxiv.org/abs/2603.27967), official
+dataset, base model, author model, upstream code and this experiment's own evidence.
+Links were checked on 2026-10-11. Upstream references are distinguished from our
+measured scores; they do not independently verify the archived 68.06% paper value.
+
 `data/provenance.json` records hashes of the archived result sources.
 `data/image-manifest.json` records original image hashes and display derivative hashes.
 `data/results-verified.json` records the independently rescored main experiment.

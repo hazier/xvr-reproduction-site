@@ -7,16 +7,37 @@
   <link rel="stylesheet" href="style.css"><script src="app.js" defer></script>
 </head>
 <body>
-  <header><div class="brand">XVR <span>H800 FullSFT</span></div><nav aria-label="页面导航"><a href="#cases">逐题对比</a><a href="#results">实验结果</a><a href="https://github.com/hazier/xvr-reproduction-site">GitHub</a></nav></header>
+  <header><div class="brand">XVR <span>H800 FullSFT</span></div><nav aria-label="页面导航"><a href="#cases">逐题对比</a><a href="#results">实验结果</a><a href="#references">参考文献</a><a href="https://github.com/hazier/xvr-reproduction-site">GitHub</a></nav></header>
   <main>
     <section class="heading"><div><p class="eyebrow">XVR-EVAL / JUL 2026</p><h1>多视角空间推理 · 实验阅览</h1></div><p class="scope">1,866 题 · 同流程三模型对比<br>H800 全参数 SFT · 最佳 checkpoint 1000</p></section>
     <section class="metrics" aria-label="全量准确率"><div><span>Base · Qwen3-VL-2B</span><strong>21.44<small>%</small></strong><p>400 / 1,866</p></div><div><span>Author · Qwen3-VL-2B-XVR</span><strong>68.38<small>%</small></strong><p>1,276 / 1,866</p></div><div class="ours"><span>Ours · H800 FullSFT</span><strong>72.24<small>%</small></strong><p>1,348 / 1,866 · +3.86 pp vs Author</p></div></section>
+    <p class="source-note">数据集：XVR-Eval <a class="cite" href="#ref-1" aria-label="参考文献 1：XVR 论文">[1]</a><a class="cite" href="#ref-2" aria-label="参考文献 2：XVR 数据集">[2]</a> · Base / Author 模型 <a class="cite" href="#ref-3" aria-label="参考文献 3：基础模型">[3]</a><a class="cite" href="#ref-4" aria-label="参考文献 4：作者模型">[4]</a> · 上方分数均为本次同流程实测，非论文原表 <a class="cite" href="#ref-6" aria-label="来源 6：本次实验记录">[6]</a></p>
     <section id="cases" aria-label="逐题对比">
       <form id="filters" class="toolbar" role="search"><label class="search">题号 / 题目<input id="search" type="search" placeholder="搜索 sample ID 或题目内容" autocomplete="off"></label><label>任务<select id="task"><option value="">全部任务</option></select></label><label>筛选模型<select id="model"><option value="2">H800 FullSFT</option><option value="1">Author XVR</option><option value="0">Base</option></select></label><label>作答结果<select id="result"><option value="">全部结果</option><option value="correct">正确</option><option value="wrong">错误</option><option value="gain">H800 正确 / Author 错误</option><option value="loss">H800 错误 / Author 正确</option></select></label><button id="reset" type="button">重置</button></form>
       <div class="statusline"><p id="count" role="status">正在读取归档数据…</p><a href="data/summary.json" download>结果 JSON ↓</a></div>
       <div class="workspace"><aside aria-label="题目列表"><div id="list"></div><div class="pagination"><button id="prev" type="button" title="上一页" aria-label="上一页">←</button><span id="page"></span><button id="next" type="button" title="下一页" aria-label="下一页">→</button></div></aside><article id="detail" aria-live="polite"><p class="empty">正在读取题目…</p></article></div>
     </section>
-    <section id="results" class="results"><h2>完整结果与训练记录</h2><div class="table-scroll"><table><thead><tr><th>任务 ID</th><th>题数</th><th>Base</th><th>Author</th><th>H800 FullSFT</th></tr></thead><tbody id="task-results"></tbody></table></div><div class="record"><div><h3>训练配置</h3><dl><dt>训练 / 验证</dt><dd>103,576 / 3,208</dd><dt>训练方式</dt><dd>全参数 SFT · 3 epochs</dd><dt>Batch / 累积</dt><dd>4 / 64 · 有效 batch 256</dd><dt>Learning rate</dt><dd>5 × 10⁻⁵</dd><dt>Optimizer steps</dt><dd>1,215 · 最佳 checkpoint 1000</dd></dl></div><figure><img src="assets/training_curve.png" alt="归档 trainer_state 中的训练与验证损失曲线" loading="lazy"></figure></div><h3>结果口径</h3><p>主表为相同题目、提示词和官方归档 scorer 的三模型比较：batch 4，max_new_tokens 64，regex parser，dual scoring，无额外 answer-only 指令。已离线逐题复算，并核对题目顺序、标准答案和提示词。</p><p>本次 H800 72.24% 比归档报告记录的论文值 68.06% 高 4.18 个百分点；后者是跨报告比较，不是新的论文表格核验或显著性检验。初次 H800 评测 71.70% 和旧提示词基线 37.41% 属于不同运行，未混入主表。Token Trace 属于另一次诊断运行，不替换主结果，也不代表隐藏思维过程。</p><p>图片为原始评测图片的展示副本，最长边 768 像素；不用于重跑评测。任务采用原始 ID，避免旧报告 task6/task11 命名差异。当前公开阅览范围仅为 XVR-Eval，不含其他数据集和后续 VaLR 实验。</p></section>
+    <section id="results" class="results">
+      <h2>完整结果与训练记录 <a class="cite" href="#ref-6" aria-label="来源 6：本次实验记录">[6]</a></h2>
+      <div class="table-scroll"><table><thead><tr><th>任务 ID</th><th>题数</th><th>Base</th><th>Author</th><th>H800 FullSFT</th></tr></thead><tbody id="task-results"></tbody></table></div>
+      <div class="record"><div><h3>本次训练配置</h3><dl><dt>训练 / 验证</dt><dd>103,576 / 3,208</dd><dt>训练方式</dt><dd>全参数 SFT · 3 epochs</dd><dt>Batch / 累积</dt><dd>4 / 64 · 有效 batch 256</dd><dt>Learning rate</dt><dd>5 × 10⁻⁵</dd><dt>Optimizer steps</dt><dd>1,215 · 最佳 checkpoint 1000</dd></dl></div><figure><img src="assets/training_curve.png" alt="归档 trainer_state 中的训练与验证损失曲线" loading="lazy"></figure></div>
+      <h3>结果口径</h3>
+      <p>主表为相同题目、提示词和官方归档 scorer 的三模型比较：batch 4，max_new_tokens 64，regex parser，dual scoring，无额外 answer-only 指令。上游训练与评测代码见 <a class="cite" href="#ref-5" aria-label="来源 5：官方代码">[5]</a>；本次已离线逐题复算，并核对题目顺序、标准答案和提示词 <a class="cite" href="#ref-6" aria-label="来源 6：本次实验记录">[6]</a>。上游当前版本不等同于本次归档版本。</p>
+      <p>本次 H800 72.24% 比归档报告记录的论文值 68.06% 高 4.18 个百分点；后者是跨报告比较，不是新的论文表格核验或显著性检验。原论文入口见 <a class="cite" href="#ref-1" aria-label="参考文献 1：XVR 论文">[1]</a>，该引用不表示已重新核对 68.06%。初次 H800 评测 71.70% 和旧提示词基线 37.41% 属于不同运行，未混入主表。Token Trace 属于另一次诊断运行，不替换主结果，也不代表隐藏思维过程 <a class="cite" href="#ref-6" aria-label="来源 6：本次实验记录">[6]</a>。</p>
+      <p>题目与图片来自 XVR 数据集 <a class="cite" href="#ref-2" aria-label="参考文献 2：XVR 数据集">[2]</a>。本站图片为原始评测图片的展示副本，最长边 768 像素；不用于重跑评测。原图与展示副本 SHA256 见 <a href="data/image-manifest.json">图片来源清单</a>。任务采用原始 ID，避免旧报告 task6/task11 命名差异。当前公开阅览范围仅为 XVR-Eval，不含其他数据集和后续 VaLR 实验。</p>
+    </section>
+    <section id="references" class="references" aria-labelledby="references-title">
+      <h2 id="references-title">参考文献与实验来源</h2>
+      <ol>
+        <li id="ref-1">Suchae Jeong, Jaehwi Song, et al. <cite>Learning Multi-View Spatial Reasoning from Cross-View Relations.</cite> CVPR, 2026, pp. 2570–2581. <a href="https://arxiv.org/abs/2603.27967">论文</a> · <a href="https://cross-view-relations.github.io/">官方项目页</a>。</li>
+        <li id="ref-2">XVR 作者团队. <cite>XVR 数据集</cite>：题目、多视角图片与标准答案来源。<a href="https://huggingface.co/datasets/Jaehwisong/XVR">Jaehwisong/XVR</a>。本站展示副本经过缩放与 JPEG 编码，原始素材权利以各自来源为准。</li>
+        <li id="ref-3">Qwen Team. <cite>Qwen3-VL-2B-Instruct</cite>：本次 Base 与 FullSFT 初始化模型。<a href="https://huggingface.co/Qwen/Qwen3-VL-2B-Instruct">官方模型卡</a>。</li>
+        <li id="ref-4">XVR 作者团队. <cite>Qwen3-VL-2B-XVR</cite>：本次 Author 对照模型。<a href="https://huggingface.co/Jaehwisong/Qwen3-VL-2B-XVR">作者模型卡</a>。</li>
+        <li id="ref-5">XVR 作者团队. <cite>Cross-View-Relations</cite>：上游训练、数据生成与评测实现。<a href="https://github.com/cross-view-relations/cross-view-relations">官方代码仓库</a>。本页参数以本次归档配置为准。</li>
+        <li id="ref-6">本项目. <cite>H800 FullSFT 复现实验记录</cite>，2026 年 7 月，非同行评审论文。<a href="data/summary.json">实测分数</a> · <a href="data/results-verified.json">逐题复算记录</a> · <a href="data/provenance.json">原始结果与独立 Token Trace 的路径及 SHA256</a>。主表分数来自本次运行，非论文原表；完整研究归档保存在私有仓库。</li>
+      </ol>
+      <p class="source-note">外部来源链接核对日期：2026-10-11。文献用于标明方法、数据与模型来源，不代表上游作者认可本次复现结论。</p>
+    </section>
     <footer><p>上游：<a href="https://cross-view-relations.github.io">Cross-View Relations / XVR</a> · 基础模型：Qwen3-VL · 非官方复现实验</p><p><a href="data/provenance.json">结果来源</a> · <a href="data/image-manifest.json">图片来源哈希</a> · <a href="data/results-verified.json">分数核对记录</a></p><p>原始代码、数据及图片权利归其各自权利人；本展示不授予第三方素材的额外许可。</p></footer>
   </main>
   <dialog id="image-dialog"><button id="close-image" type="button" aria-label="关闭图片" title="关闭图片">×</button><img id="large-image" alt=""><p id="image-caption"></p></dialog>
